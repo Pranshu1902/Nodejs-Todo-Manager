@@ -58,9 +58,9 @@ describe("List the todo items", function () {
   test("create a todo", async () => {
     const agent = request.agent(server);
     await login(agent, "user.a@test.com", "12345678");
+
     const res = await agent.get("/todos");
     const csrfToken = extractCsrfToken(res);
-    console.log(res.text);
     const response = await agent.post("/todos").send({
       title: "Buy milk",
       dueDate: new Date().toISOString(),

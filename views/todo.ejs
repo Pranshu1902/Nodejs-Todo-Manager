@@ -12,11 +12,12 @@
         .querySelector('meta[name="csrf-token"]')
         .getAttribute("content");
 
-      function updateTodo(id) {
-        fetch(`/todos/${id}/updateCompleteStatus`, {
+      function updateTodo(id, currentStatus) {
+        fetch(`/todos/${id}`, {
           method: "put",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            completed: currentStatus,
             "_csrf": token,
           }),
         })
@@ -101,7 +102,7 @@
               id="todo-checkbox-<%= overdue[i].id %>"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300"
-              onclick="updateTodo(<%= overdue[i].id %> )"
+              onclick="updateTodo(<%= overdue[i].id %>, <%= tasks[i].completed %> )"
               <%=overdue[i].completed ? "checked" : "" %>
             />
             <label
