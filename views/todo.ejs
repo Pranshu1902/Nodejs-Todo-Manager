@@ -17,7 +17,7 @@
           method: "put",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            completed: currentStatus,
+            completed: !currentStatus,
             "_csrf": token,
           }),
         })
@@ -146,7 +146,7 @@
               id="todo-checkbox-<%= today[i].id %>"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300"
-              onclick="updateTodo(<%= today[i].id %> )"
+              onclick="updateTodo(<%= today[i].id %>, <%= today[i].completed %> )"
               <%=today[i].completed ? "checked" : "" %>
             />
             <label
@@ -190,7 +190,7 @@
               id="todo-checkbox-<%= later[i].id %>"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300"
-              onclick="updateTodo(<%= later[i].id %> )"
+              onclick="updateTodo(<%= later[i].id %>, <%= later[i].completed %> )"
               <%=later[i].completed ? "checked" : "" %>
             />
             <label
@@ -234,7 +234,7 @@
               id="todo-checkbox-<%= complete[i].id %>"
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300"
-              onclick="updateTodo(<%= complete[i].id %> )"
+              onclick="updateTodo(<%= complete[i].id %>, <%= complete[i].completed %> )"
               <%= complete[i].completed ? "checked" : "" %>
             />
             <label
