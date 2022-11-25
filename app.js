@@ -140,6 +140,10 @@ app.post(
   "/todos",
   connectEnsureLogin.ensureLoggedIn(),
   async function (request, response) {
+    if (request.body.title.length < 5) {
+      request.flash("error", "Todo title should be alteast 5 characters long");
+      return response.redirect("/todos");
+    }
     console.log("Creating new Todo: ", request.body);
     try {
       await Todo.addTodo({
@@ -190,6 +194,16 @@ app.delete(
 
 // user routes
 app.get("/signup", (request, response) => {
+  // if (!request.body.email) {
+  //   console.log("No email provided");
+  //   request.flash("error", "Email can't be a null value");
+  //   return response.redirect("/signup");
+  // }
+  // if (!request.body.firstName) {
+  //   console.log("No name provided");
+  //   request.flash("error", "Name can't be a null value");
+  //   return response.redirect("/signup");
+  // }
   response.render("signup", {
     title: "Signup",
     csrfToken: request.csrfToken(),
@@ -207,6 +221,20 @@ app.get("/signout", (request, response) => {
 });
 
 app.post("/users", async (request, response) => {
+  if (!request.body.email) {
+    console.log("No email provided");
+    request.flash("error", "Email can't be a null value");
+    return response.redirect("/signup");
+  }
+  if (!request.body.firstName) {
+    console.log("No name provided");
+    request.flash("error", "Name can't be a null value");
+    return response.redirect("/signup");
+  }
+  if (request.body.password.length < 8) {
+    request.flash("error", "Password should be atleast 8 characters");
+    return response.redirect("/signup");
+  }
   // hasing the password
   const hashpwd = await bcrypt.hash(request.body.password, saltRounds); // take time so add await
   try {
@@ -221,11 +249,13 @@ app.post("/users", async (request, response) => {
         console.log(err);
         response.redirect("/");
       } else {
+        request.flash("success", "Sign up successful");
         response.redirect("/todos");
       }
     });
   } catch (error) {
-    console.log(error);
+    request.flash("error", error.message);
+    return response.redirect("/signup");
   }
 });
 

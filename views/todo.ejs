@@ -86,6 +86,14 @@
       </div>
     </form>
 
+    <div class="flex flex-col justify-center items-center gap-3 ">
+      <% if (messages && messages.error && messages.error.length > 0) { %>
+        <% for(var i=0; i<messages.error.length; i++) {%>
+          <div class="bg-red-300 text-red-900 p-2 rounded-lg shadow"> <%= messages.error[i] %></div>
+        <% } %>
+      <% } %>
+    </div>
+
     <div class="mt-2 flex flex-col justify-center items-center">
     <div class="mt-2 flex flex-col justify-start w-2/5">
       <div class="flex gap-2 items-center w-2/5 justify-start">
@@ -103,7 +111,6 @@
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300"
               onclick="updateTodo(<%= overdue[i].id %>, <%= overdue[i].completed %> )"
-              <%=overdue[i].completed ? "checked" : "" %>
             />
             <label
               for="todo-checkbox-<%= overdue[i].id %>"
@@ -147,7 +154,6 @@
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300"
               onclick="updateTodo(<%= today[i].id %>, <%= today[i].completed %> )"
-              <%=today[i].completed ? "checked" : "" %>
             />
             <label
               for="todo-checkbox-<%= today[i].id %>"
@@ -191,7 +197,6 @@
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300"
               onclick="updateTodo(<%= later[i].id %>, <%= later[i].completed %> )"
-              <%=later[i].completed ? "checked" : "" %>
             />
             <label
               for="todo-checkbox-<%= later[i].id %>"
@@ -235,7 +240,7 @@
               type="checkbox"
               class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300"
               onclick="updateTodo(<%= complete[i].id %>, <%= complete[i].completed %> )"
-              <%= complete[i].completed ? "checked" : "" %>
+              checked
             />
             <label
               for="todo-checkbox-<%= complete[i].id %>"
