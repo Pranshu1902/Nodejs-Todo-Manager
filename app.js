@@ -63,7 +63,10 @@ passport.use(
           }
         })
         .catch((error) => {
-          return done(error);
+          console.log(error);
+          return done(null, false, {
+            message: "This email is not registered",
+          });
         });
     }
   )
@@ -140,8 +143,12 @@ app.post(
   "/todos",
   connectEnsureLogin.ensureLoggedIn(),
   async function (request, response) {
-    if (request.body.title.length < 5) {
-      request.flash("error", "Todo title should be alteast 5 characters long");
+    if (request.body.title.length == 0) {
+      request.flash("error", "Please enter a title");
+      response.redirect("/todos");
+    }
+    if (request.body.dueDate.length == 0) {
+      request.flash("error", "Todo dueDate can't be empty");
       return response.redirect("/todos");
     }
     console.log("Creating new Todo: ", request.body);
@@ -231,6 +238,14 @@ app.post("/users", async (request, response) => {
     request.flash("error", "Name can't be a null value");
     return response.redirect("/signup");
   }
+
+  // check if email is already registered
+  const user = await User.findOne({ where: { email: request.body.email } });
+  if (user) {
+    request.flash("error", "Email already registered");
+    return response.redirect("/signup");
+  }
+
   if (request.body.password.length < 8) {
     request.flash("error", "Password should be atleast 8 characters");
     return response.redirect("/signup");
