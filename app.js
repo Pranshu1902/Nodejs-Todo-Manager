@@ -201,16 +201,6 @@ app.delete(
 
 // user routes
 app.get("/signup", (request, response) => {
-  // if (!request.body.email) {
-  //   console.log("No email provided");
-  //   request.flash("error", "Email can't be a null value");
-  //   return response.redirect("/signup");
-  // }
-  // if (!request.body.firstName) {
-  //   console.log("No name provided");
-  //   request.flash("error", "Name can't be a null value");
-  //   return response.redirect("/signup");
-  // }
   response.render("signup", {
     title: "Signup",
     csrfToken: request.csrfToken(),
