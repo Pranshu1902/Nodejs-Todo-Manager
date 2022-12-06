@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const request = require("supertest");
 const cheerio = require("cheerio");
 
@@ -77,7 +78,7 @@ describe("List the todo items", function () {
     let res = await agent.get("/todos");
     let csrfToken = extractCsrfToken(res);
 
-    const response = await agent.post("/todos").send({
+    await agent.post("/todos").send({
       title: "Buy milk",
       dueDate: new Date().toISOString(),
       completed: false,
@@ -111,7 +112,7 @@ describe("List the todo items", function () {
     let res = await agent.get("/todos");
     let csrfToken = extractCsrfToken(res);
 
-    const response = await agent.post("/todos").send({
+    await agent.post("/todos").send({
       title: "Buy milk",
       dueDate: new Date().toISOString(),
       completed: false,
