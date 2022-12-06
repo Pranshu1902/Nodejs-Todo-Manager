@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const express = require("express");
 const app = express();
 const csrf = require("tiny-csrf");
@@ -88,6 +89,10 @@ passport.deserializeUser((id, done) => {
 });
 
 app.get("/", async function (request, response) {
+  if (request.user && request.user.id) {
+    return response.redirect("/todos");
+  }
+
   response.render("index", {
     title: "Todo Application",
     csrfToken: request.csrfToken(),
@@ -106,12 +111,17 @@ app.get(
       const today = await Todo.getDueToday(loggedInUser);
       const complete = await Todo.getCompleted(loggedInUser);
 
+      const user = await User.findByPk(loggedInUser);
+      const username =
+        user.dataValues.firstName + " " + user.dataValues.lastName;
+
       if (request.accepts("html")) {
         response.render("todo", {
           overdue,
           later,
           today,
           complete,
+          username,
           csrfToken: request.csrfToken(),
         });
       } else {
@@ -265,6 +275,9 @@ app.post("/users", async (request, response) => {
 });
 
 app.get("/login", (request, response) => {
+  if (request.user && request.user.id) {
+    return response.redirect("/todos");
+  }
   response.render("login", { title: "Login", csrfToken: request.csrfToken() });
 });
 

@@ -52,7 +52,10 @@
       <div>
         <p class="py-2">Welcome to TO-DO manager</p>
       </div>
-      <a href="/signout">Signout</a>
+      <div class="flex gap-24 justify-between">
+        <p class="text-xl flex items-center"><b><%= username %></b>'s todos</p>
+        <a class="bg-gray-100 hover:bg-red-200 border-2 border-red-500 p-2 rounded-lg" href="/signout">Signout</a>
+    </div>
     </div>
 
     <form class="flex justify-center" action="/todos" method="post">
